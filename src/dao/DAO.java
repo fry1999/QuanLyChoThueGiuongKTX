@@ -9,15 +9,13 @@ public class DAO {
 	
 	public DAO() {
 		if(con == null) {
-			//String dbUrl = "jdbc:mysql://localhost:3306/quanlychothuegiuongktx?autoReconnect=true&useSSL=false";
-			String dbUrl = "jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_2b4b7a67e105418?sslmode = require";
+			String dbUrl = "jdbc:mysql://us-cdbr-east-06.cleardb.net:3306/heroku_2b4b7a67e105418?sslmode=require";
 			String dbClass = "com.mysql.jdbc.Driver";
 			
 			try {
 				Class.forName(dbClass);
 				try {
-					//con = DriverManager.getConnection(dbUrl, "root","123456");	
-					con = DriverManager.getConnection(dbUrl, "b4bfae45df5bd3", "67b62b4f");
+					con = DriverManager.getConnection(dbUrl, "b4bfae45df5bd3","67b62b4f");	
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

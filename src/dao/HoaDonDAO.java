@@ -9,7 +9,7 @@ public class HoaDonDAO extends DAO{
 	}
 	
 	public static boolean lenHoaDon(HoaDon hoaDon) {
-		String sqlPhong = "SELECT tblgiuongduocthe.*, "
+		String sqlPhong = "SELECT tblgiuongduocthe.*, ";
 		return false;
 	}
 	

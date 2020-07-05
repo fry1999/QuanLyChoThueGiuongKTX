@@ -1,12 +1,15 @@
 package dao;
 
+import java.util.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import model.Giuong;
 import model.GiuongDuocThue;
+import model.Phong;
 
 public class GiuongDAO extends DAO {
 
@@ -15,11 +18,9 @@ public class GiuongDAO extends DAO {
 	}
 	
 	public static ArrayList<GiuongDuocThue> timKiemGiuongChuaLenHoaDon(){
-		//Trả về tblGiuong chưa lên hóa đơn.
+		//Tráº£ vá»� tblGiuong chÆ°a lÃªn hÃ³a Ä‘Æ¡n.
 		ArrayList<GiuongDuocThue> listG = new ArrayList<GiuongDuocThue>();
-		String sqlSearch = "(SELECT tblgiuong.*, GDT.* FROM tblgiuong "
-				+ "INNER JOIN (SELECT * FROM tblgiuongduocthue WHERE ID NOT IN (SELECT tblhoadon.IDgiuongduocthue FROM tblhoadon)) AS GDT "
-				+ "ON (tblgiuong.ID = GDT.IDgiuong))";
+		String sqlSearch = "(SELECT tblgiuong.*, GDT.* FROM tblgiuong INNER JOIN (SELECT * FROM tblgiuongduocthue WHERE ID NOT IN (SELECT tblhoadon.IDgiuongduocthue FROM tblhoadon)) AS GDT ON (tblgiuong.ID = GDT.IDgiuong))";
 		try {
 			
 			PreparedStatement ps = con.prepareStatement(sqlSearch);
@@ -49,6 +50,35 @@ public class GiuongDAO extends DAO {
 		}
 		return listG;
 		
+	}
+	
+	public ArrayList<Giuong> timKiemGiuongTrong(Date checkin, float gia){
+		ArrayList<Giuong> result = new ArrayList<Giuong>();
+		String sql = "SELECT tblgiuong.tengiuong, tblgiuong.kieugiuong, tblgiuong.giaThue, tblgiuong.moTa, tblgiuong.id, tblphong.tenphong FROM tblphong INNER JOIN tblgiuong ";
+		String sql2 = " ON tblgiuong.IDphong = tblphong.ID WHERE WHERE id NOT IN (SELECT idroom FROM tblgiuongduocthue WHERE ngayketthuc < ?) AND giathue <= ?";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try{
+			PreparedStatement ps = con.prepareStatement(sql + sql2);
+			ps.setString(1, sdf.format(checkin));
+			ps.setFloat(2, gia);
+			ResultSet rs = ps.executeQuery();
+
+			while(rs.next()){
+				Giuong rm = new Giuong();
+				Phong p = new Phong();
+				rm.setID(rs.getInt("id"));
+				rm.setTenGiuong(rs.getString("tengiuong"));
+				rm.setKieuGiuong(rs.getString("kieugiuong"));
+				rm.setGiaThue(rs.getFloat("giathue"));
+				rm.setMoTa(rs.getString("mota"));
+				p.setTenPhong(re.getString("tenphong"));
+				rm.setPhong(p);
+				result.add(rm);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}	
+		return result;
 	}
 	
 }

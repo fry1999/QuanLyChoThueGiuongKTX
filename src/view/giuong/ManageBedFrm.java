@@ -95,7 +95,7 @@ public class ManageBedFrm extends JFrame implements ActionListener{
 				return false;
 			}
 		};
-		//tableModel.setColumnIdentifiers(columnNames);
+		tableModel.setColumnIdentifiers(columnNames);
 		tblGiuong.setModel(tableModel);
 	}
 

@@ -24,7 +24,7 @@ public class NhanVienDAO extends DAO {
 			if(rs.next()) {
 				nv.setID(rs.getInt("ID"));
 				nv.setViTri(rs.getString("viTri"));
-				nv.setTen("ten");
+				nv.setTen(rs.getString("ten"));
 				result = true;
 			}
 		} catch (SQLException e) {
