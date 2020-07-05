@@ -99,7 +99,7 @@ public class LoginFrm extends JFrame implements ActionListener{
 			
 			NhanVienDAO nvd = new NhanVienDAO();
 			if(nvd.checkLogin(nv)) {
-				if(nv.getViTri().equalsIgnoreCase("quan ly")) {
+				if(nv.getViTri().equalsIgnoreCase("quan_ly")) {
 					(new ManageHomeFrm(nv)).setVisible(true);
 					this.dispose();
 				}
