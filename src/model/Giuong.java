@@ -8,6 +8,13 @@ public class Giuong implements Serializable{
 	private String kieuGiuong;
 	private String moTa;
 	private float giaThue;
+	private float tienCoc;
+	public float getTienCoc() {
+		return tienCoc;
+	}
+	public void setTienCoc(float tienCoc) {
+		this.tienCoc = tienCoc;
+	}
 	private Phong phong;
 	public Phong getPhong() {
 		return phong;
