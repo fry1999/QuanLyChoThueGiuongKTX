@@ -11,9 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import dao.GiuongDAO;
 import model.Giuong;
 import model.NhanVien;
+import view.giuong.ManageBedFrm;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
@@ -22,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
-public class SearchBedFrm extends JFrame {
+public class SearchBedFrm extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField txtNgay;
@@ -30,21 +32,7 @@ public class SearchBedFrm extends JFrame {
 	private JTable table;
 	private ArrayList<Giuong> listGiuong;
 	private NhanVien nhanVien;
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SearchBedFrm frame = new SearchBedFrm();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JButton btnSearch;
 
 	/**
 	 * Create the frame.
@@ -81,46 +69,60 @@ public class SearchBedFrm extends JFrame {
 		contentPane.add(txtGia);
 		txtGia.setColumns(10);
 		
-		JButton btnSearch = new JButton("Tim kiem");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JButton btnClicked = (JButton)e.getSource();
-				if(btnClicked.equals(btnSearch)){
-					String ngay  = txtNgay.getText();
-					Float gia = Float.parseFloat(txtGia.getText());
-					if((txtNgay.getText() == null)||(txtNgay.getText().length() == 0))
-						return;
-					if((txtGia.getText() == null)||(txtGia.getText().length() == 0))
-						return;
-					Date date =new SimpleDateFormat("dd/MM/yyyy").parse(ngay);  
-					GiuongDAO rd = new GiuongDAO();
-					listGiuong = rd.timKiemGiuongTrong(date, Float.parseFloat(txtGia.getText()));
-					String[] columnNames = {"Id", "Giuong", "Phong", "Loai", "Gia", "Tien coc", "Mo ta"};
-					String[][] value = new String[listGiuong.size()][5];
-					for(int i=0; i<listGiuong.size(); i++){
-						value[i][0] = listGiuong.get(i).getID() +"";
-						value[i][1] = listGiuong.get(i).getTenGiuong();
-						value[i][2] = listGiuong.get(i).getPho;
-						value[i][2] = listGiuong.get(i).getKieuGiuong();
-						value[i][3] = listGiuong.get(i).getGiaThue();
-						value[i][4] = listGiuong.get(i).getDes();
-					}
-					DefaultTableModel tableModel = new DefaultTableModel(value, columnNames) {
-					    @Override
-					    public boolean isCellEditable(int row, int column) {
-					       //unable to edit cells
-					       return false;
-					    }
-					};
-					tblResult.setModel(tableModel);
-				}
-			}
-		});
+		btnSearch = new JButton("Tim kiem");
+		btnSearch.addActionListener(this);
 		btnSearch.setBounds(150, 98, 89, 23);
 		contentPane.add(btnSearch);
 		
 		table = new JTable();
 		table.setBounds(10, 131, 414, 120);
 		contentPane.add(table);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if((e.getSource() instanceof JButton) && (e.getSource().equals(btnSearch))){
+			String ngay  = txtNgay.getText();
+			Float gia = Float.parseFloat(txtGia.getText());
+			if((txtNgay.getText() == null)||(txtNgay.getText().length() == 0))
+				return;
+			if((txtGia.getText() == null)||(txtGia.getText().length() == 0))
+				return;
+			Date date;
+			try {
+				date =new SimpleDateFormat("dd/MM/yyyy").parse(ngay);
+			}
+			catch (Exception error) {
+				// TODO: handle exception
+				JOptionPane.showMessageDialog(this, "Hãy nhập ngày theo định dạng dd/mm/yyyy");
+				return;
+			}
+			System.out.print(date);
+			  
+			GiuongDAO rd = new GiuongDAO();
+			listGiuong = rd.timKiemGiuongTrong(date, Float.parseFloat(txtGia.getText()));
+			String[] columnNames = {"Id", "Giuong", "Phong", "Loai", "Gia", "Tien coc", "Mo ta"};
+			String[][] value = new String[listGiuong.size()][7];
+			System.out.print(listGiuong);
+			for(int i=0; i<listGiuong.size(); i++){
+				value[i][0] = listGiuong.get(i).getID() +"";
+				value[i][1] = listGiuong.get(i).getTenGiuong();
+				value[i][2] = listGiuong.get(i).getPhong().getTenPhong();
+				value[i][3] = listGiuong.get(i).getKieuGiuong();
+				value[i][4] = String.valueOf(listGiuong.get(i).getGiaThue());
+				value[i][5] = String.valueOf(listGiuong.get(i).getTienCoc());
+				value[i][6] = listGiuong.get(i).getMoTa();
+			}
+			DefaultTableModel tableModel = new DefaultTableModel(value, columnNames) {
+			    @Override
+			    public boolean isCellEditable(int row, int column) {
+			       //unable to edit cells
+			       return false;
+			    }
+			};
+			table.setModel(tableModel);
+		}
+		
 	}
 }
