@@ -75,7 +75,6 @@ public class ManageBedFrm extends JFrame implements ActionListener{
 
 
 	private void hienthi() {
-		System.out.println("hêh");
 		String[] columnNames = {"ID","IDGiuong", "Tên giường", "Kiểu giường", "Giá thuê", "Mô tả", "Ngày bắt đầu", "Ngày kết thúc", };
 		int n = listG.size();
 		System.out.println(n);
@@ -96,7 +95,7 @@ public class ManageBedFrm extends JFrame implements ActionListener{
 				return false;
 			}
 		};
-		tableModel.setColumnIdentifiers(columnNames);
+		//tableModel.setColumnIdentifiers(columnNames);
 		tblGiuong.setModel(tableModel);
 	}
 

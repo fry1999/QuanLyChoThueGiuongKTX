@@ -17,7 +17,9 @@ public class GiuongDAO extends DAO {
 	public static ArrayList<GiuongDuocThue> timKiemGiuongChuaLenHoaDon(){
 		//Trả về tblGiuong chưa lên hóa đơn.
 		ArrayList<GiuongDuocThue> listG = new ArrayList<GiuongDuocThue>();
-		String sqlSearch = "(SELECT tblgiuong.*, GDT.* FROM tblgiuong INNER JOIN (SELECT * FROM tblgiuongduocthue WHERE ID NOT IN (SELECT tblhoadon.IDgiuongduocthue FROM tblhoadon)) AS GDT ON (tblgiuong.ID = GDT.IDgiuong))";
+		String sqlSearch = "(SELECT tblgiuong.*, GDT.* FROM tblgiuong "
+				+ "INNER JOIN (SELECT * FROM tblgiuongduocthue WHERE ID NOT IN (SELECT tblhoadon.IDgiuongduocthue FROM tblhoadon)) AS GDT "
+				+ "ON (tblgiuong.ID = GDT.IDgiuong))";
 		try {
 			
 			PreparedStatement ps = con.prepareStatement(sqlSearch);
